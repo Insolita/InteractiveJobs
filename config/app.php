@@ -1,5 +1,7 @@
 <?php
 
+use Laravel\Horizon\HorizonServiceProvider;
+
 return [
 
     /*
@@ -150,7 +152,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+         HorizonServiceProvider::class,
         /*
          * Application Service Providers...
          */
