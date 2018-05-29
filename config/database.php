@@ -44,7 +44,7 @@ return [
     'redis' => [
         'client' => 'predis',
         'options'=>[
-            'prefix'=> 'taskapp:'
+           // 'prefix'=> 'taskapp:'
         ],
         'default' => [
             'host' => env('REDIS_HOST', '127.0.0.1'),

@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -18,3 +19,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware'=>['web', 'auth']], function (){
+    Route::resource('logs', 'JobLogController')->only(['index', 'show', 'destroy']);
+    Route::get('/logs/{type}/{id}', 'JobLogController@showGroup');
+    Route::get('/jobs', 'JobController@index')->name('jobs.index');
+    Route::get('/jobs/watch', 'JobController@watch')->name('jobs.watch');
+    Route::get('/job/{job}/show', 'JobController@show')->name('jobs.show');
+    Route::get('/job/{job}', 'JobController@create')->name('jobs.create');
+    Route::post('/job/{job}', 'JobController@store');
+});
+
+

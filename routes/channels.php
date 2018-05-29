@@ -11,6 +11,17 @@
 |
 */
 
-Broadcast::channel('App.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+use App\User;
+
+Broadcast::channel('User.{id}', function ($user, $id) {
+    return (int)$user->id === (int)$id;
+});
+
+
+Broadcast::channel('Job.{id}', function (User $user, $id) {
+    return $user->isAdmin() || $user->hasJob($id);
+});
+
+Broadcast::channel('JobsMonitor.{id}', function (User $user, $id) {
+    return $user->isAdmin() || (int)$user->id === (int)$id;
 });

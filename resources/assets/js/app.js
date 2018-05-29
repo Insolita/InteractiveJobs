@@ -1,22 +1,52 @@
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
 require('./bootstrap');
+import Vue from 'vue';
+import VueEcho from 'vue-echo';
+import axios from 'axios';
+import Toasted from 'vue-toasted';
 
-window.Vue = require('vue');
+import ActiveJob from './components/ActiveJob';
+import WatchActive from './components/WatchActive';
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+Vue.use(Toasted, { iconPack: 'fontawesome', theme:'bubble', icon:'fa-info-circle', className: 'app-toasted'});
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.use(VueEcho, {
+    broadcaster: 'socket.io',
+    host: window.location.hostname + ':6001'
+});
+
+Object.defineProperty(
+    Vue.prototype,
+    '$user', {value: window.appConfig.auth},
+    '$http', {
+        value: axios.create({
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content
+            }
+        })
+    });
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    components:{ActiveJob, WatchActive},
+    data(){
+        return {
+            isAuthorized: false
+        }
+    },
+    mounted(){
+        if(this.$user!== null){
+            this.isAuthorized = true;
+            this.subscribeUser();
+        }
+    },
+    methods:{
+        subscribeUser(){
+            this.$echo.private(`User.${this.$user.id}`).notification((notification) => {
+                this.$toasted.show(notification.message, {
+                    type: notification.message_type
+                }).goAway(5000);
+            });
+        }
+    }
 });

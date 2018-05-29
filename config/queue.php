@@ -3,18 +3,15 @@
 return [
     'default' => env('QUEUE_DRIVER', 'sync'),
     'connections' => [
-
         'sync' => [
             'driver' => 'sync',
         ],
-
         'database' => [
             'driver' => 'database',
             'table' => 'jobs',
             'queue' => 'default',
             'retry_after' => 90,
         ],
-        
         'redis' => [
             'driver' => 'redis',
             'connection' => 'default',
@@ -22,7 +19,6 @@ return [
             'retry_after' => 90,
             'block_for' => null,
         ],
-
     ],
 
     /*
