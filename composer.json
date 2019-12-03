@@ -14,7 +14,8 @@
         "laravel/tinker": "^1.0",
         "predis/predis": "1.1.*",
         "symfony/dom-crawler": "^3.0|^4.0",
-        "spatie/laravel-query-builder": "1.9.*"
+        "spatie/laravel-query-builder": "1.9.*",
+        "symfony/http-foundation": ">=4.2.12"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
